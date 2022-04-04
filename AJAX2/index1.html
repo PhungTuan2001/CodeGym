@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>App</title>
+   
+</head>
+<body>
+    <div id="title-app">GIPHY PARTY</div>
+    <div id="navigation">
+        <input type="text" name="" id="input-value" placeholder="Enter a search term" class="navigation">
+        <button class="navigation" id="search">Search Giphy!</button>
+        <button class="navigation" id="remove">Remove Image</button>
+    </div>
+    <div id="result"></div>
+    <script>
+        document.querySelector('#search').addEventListener('click', searchImage)
+
+        document.querySelector('#remove').addEventListener('click', () => {
+            document.querySelector('#result').innerHTML = ''
+        })
+
+        async function searchImage(event) {
+            const val = document.querySelector('#input-value').value;
+            if (!val) {
+                return
+            }
+            const api = `http://api.giphy.com/v1/gifs/search?q=${val}&api_key=zHmHkcGguZDd6e2cu44C8mp2nbQd8EDh`;
+            const res = await fetch(api);
+            const data = await res.json();
+            const randomNumber = Math.floor(Math.random() * data.data.length)
+            const imageLink = data.data[randomNumber].images.original.url
+            const img = document.createElement('img')
+            img.src = imageLink
+            document.querySelector('#result').appendChild(img)
+        }
+    </script>
+</body>
+</html>
